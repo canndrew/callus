@@ -131,7 +131,10 @@ impl MonthView {
                 if day == self.selected_date {
                     style = style.fg(Color::Black).bg(Color::Red);
                 }
-                let summary = self.db.get_day(day);
+                let mut summary = self.db.get_day(day);
+                for hour in 0..24 {
+                    summary.push_str(&self.db.get_hour(day, hour));
+                }
                 for (line, y) in summary.lines().zip((rect.y + 2)..(rect.y + 2 + rect.height - 3)) {
                     buffer.set_stringn(rect.x + 1, y, line, rect.width as usize - 1, &style);
                 }

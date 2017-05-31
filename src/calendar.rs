@@ -1,6 +1,7 @@
 use tui::buffer::Buffer;
 use tui::layout::Rect;
 use tui::widgets::Widget;
+use xdg;
 
 use chrono::naive::datetime::NaiveDateTime;
 use chrono::Timelike;
@@ -26,7 +27,12 @@ pub struct Calendar {
 
 impl Calendar {
     pub fn new(datetime: NaiveDateTime) -> Calendar {
-        let db = Arc::new(Database::open());
+        let xdg_dirs = xdg::BaseDirectories::with_prefix("callus").unwrap();
+        let path = match xdg_dirs.find_data_file("db") {
+            Some(path) => path,
+            None => xdg_dirs.place_data_file("db").unwrap(),
+        };
+        let db = Arc::new(Database::open(path));
         Calendar {
             view: CalendarView::Month,
             month_view: MonthView::new(db.clone(), datetime.date()),

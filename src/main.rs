@@ -1,7 +1,7 @@
 extern crate tui;
 extern crate termion;
 extern crate chrono;
-extern crate tempfile;
+extern crate xdg;
 
 use std::io;
 
@@ -36,8 +36,6 @@ fn day_suffix(n: u32) -> &'static str {
         _ => "th",
     }
 }
-
-const DB_LOC: &'static str = "/home/shum/org/gtg/cal";
 
 const DAY_NAMES: [&'static str; 7] = [
     "Mon",
